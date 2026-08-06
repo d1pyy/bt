@@ -38,7 +38,7 @@ def handle(m):
         bot.reply_to(m, '<tg-emoji emoji-id="6325536273435986182">сосал ?</tg-emoji>', parse_mode='HTML')
         return
     markup = telebot.types.InlineKeyboardMarkup()
-    markup.add(telebot.types.InlineKeyboardButton('<tg-emoji emoji-id="6327887020706235691">стоп</tg-emoji>', callback_data='stop'), parse_mode='HTML')
+    markup.add(telebot.types.InlineKeyboardButton("стоп", callback_data='stop'))
     bot.reply_to(m, '<tg-emoji emoji-id="6327965167636186577">лижу (номер)</tg-emoji>', parse_mode='HTML', reply_markup=markup)
     def worker(chat_id, phone):
         ua = UserAgent()
