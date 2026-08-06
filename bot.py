@@ -35,15 +35,15 @@ active = {}
 def handle(m):
     phone = ''.join(filter(str.isdigit, m.text.strip()))
     if len(phone) < 10:
-        bot.reply_to(m, '<tg-emoji emoji-id="6325742483405800953">number pls</tg-emoji>', parse_mode='HTML')
+        bot.reply_to(m, "Нужен номер")
         return
     if m.chat.id in active:
-        bot.reply_to(m, '<tg-emoji emoji-id="6325536273435986182">suck?</tg-emoji>', parse_mode='HTML')
+        bot.reply_to(m, "Уже спамим")
         return
 
     markup = telebot.types.InlineKeyboardMarkup()
-    markup.add(telebot.types.InlineKeyboardButton("stop", callback_data='stop'))
-    bot.reply_to(m, '<tg-emoji emoji-id="6327965167636186577">licking</tg-emoji>', parse_mode='HTML', reply_markup=markup)
+    markup.add(telebot.types.InlineKeyboardButton("Стоп", callback_data='stop'))
+    bot.reply_to(m, "Спам запущен", reply_markup=markup)
 
     active[m.chat.id] = {'stop': False}
 
@@ -67,15 +67,12 @@ def stop_callback(call):
     chat_id = call.message.chat.id
     if chat_id in active:
         active[chat_id]['stop'] = True
-        bot.answer_callback_query(call.id, 'stopped')
-        bot.edit_message_text('stopped', chat_id, call.message.message_id)
+        bot.answer_callback_query(call.id, 'Остановлено')
+        bot.edit_message_text('Остановлено', chat_id, call.message.message_id)
     else:
-        bot.answer_callback_query(call.id, 'no spam')
+        bot.answer_callback_query(call.id, 'Нет активного спама')
 
 if __name__ == '__main__':
-    try:
-        requests.get(f"https://api.telegram.org/bot{TOKEN}/deleteWebhook?drop_pending_updates=true")
-        time.sleep(1)
-        bot.polling(non_stop=False, skip_pending=True)
-    except Exception as e:
-        print("Error:", e)
+    requests.get(f"https://api.telegram.org/bot{TOKEN}/deleteWebhook?drop_pending_updates=true")
+    time.sleep(1)
+    bot.polling(non_stop=False, skip_pending=True)
