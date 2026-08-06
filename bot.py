@@ -15,6 +15,7 @@ except:
     pass
 
 bot = telebot.TeleBot(TOKEN)
+bot.remove_webhook()
 
 endpoints = [
     'https://oauth.telegram.org/auth/request?bot_id=1852523856&origin=https%3A%2F%2Fcabinet.presscode.app&embed=1&return_to=https%3A%2F%2Fcabinet.presscode.app%2Flogin',
@@ -51,7 +52,7 @@ def handle(m):
 
     markup = telebot.types.InlineKeyboardMarkup()
     markup.add(telebot.types.InlineKeyboardButton("stop", callback_data='stop'))
-    bot.reply_to(m, '<tg-emoji emoji-id="6327965167636186577">licking num</tg-emoji>', parse_mode='HTML', reply_markup=markup)
+    bot.reply_to(m, '<tg-emoji emoji-id="6327965167636186577">licking</tg-emoji>', parse_mode='HTML', reply_markup=markup)
 
     active[m.chat.id] = {'stop': False}
 
