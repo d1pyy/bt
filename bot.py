@@ -3,7 +3,7 @@ import requests
 from fake_useragent import UserAgent
 import threading
 
-bot = telebot.TeleBot("8788404662:AAHQDvLsRhkXdFNfz_d2rzYHvlKHIed0tjQ")
+bot = telebot.TeleBot("8889368729:AAGcJyjZ9JWxRGVI00Q31KomLfwXC1Kqi3w")
 
 endpoints = [
     'https://oauth.telegram.org/auth/request?bot_id=1852523856&origin=https%3A%2F%2Fcabinet.presscode.app&embed=1&return_to=https%3A%2F%2Fcabinet.presscode.app%2Flogin',
