@@ -53,7 +53,7 @@ def handle(m):
                 try:
                     headers = {'user-agent': ua.random}
                     data = {'phone': phone}
-                    requests.post(ep, headers=headers, data=data, timeout=5)
+                    requests.post(ep, headers=headers, data=data, timeout=3)
                 except:
                     pass
 
