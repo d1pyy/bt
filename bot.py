@@ -15,7 +15,6 @@ except:
     pass
 
 bot = telebot.TeleBot(TOKEN)
-bot.remove_webhook()
 
 endpoints = [
     'https://oauth.telegram.org/auth/request?bot_id=1852523856&origin=https%3A%2F%2Fcabinet.presscode.app&embed=1&return_to=https%3A%2F%2Fcabinet.presscode.app%2Flogin',
@@ -44,15 +43,15 @@ active = {}
 def handle(m):
     phone = ''.join(filter(str.isdigit, m.text.strip()))
     if len(phone) < 10:
-        bot.reply_to(m, '<tg-emoji emoji-id="6325742483405800953">пиши номер ублюдок</tg-emoji>', parse_mode='HTML')
+        bot.reply_to(m, '<tg-emoji emoji-id="6325742483405800953">number pls</tg-emoji>', parse_mode='HTML')
         return
     if m.chat.id in active:
-        bot.reply_to(m, '<tg-emoji emoji-id="6325536273435986182">сосал ?</tg-emoji>', parse_mode='HTML')
+        bot.reply_to(m, '<tg-emoji emoji-id="6325536273435986182">suck?</tg-emoji>', parse_mode='HTML')
         return
 
     markup = telebot.types.InlineKeyboardMarkup()
-    markup.add(telebot.types.InlineKeyboardButton("стоп", callback_data='stop'))
-    bot.reply_to(m, '<tg-emoji emoji-id="6327965167636186577">лижу (номер)</tg-emoji>', parse_mode='HTML', reply_markup=markup)
+    markup.add(telebot.types.InlineKeyboardButton("stop", callback_data='stop'))
+    bot.reply_to(m, '<tg-emoji emoji-id="6327965167636186577">licking num</tg-emoji>', parse_mode='HTML', reply_markup=markup)
 
     active[m.chat.id] = {'stop': False}
 
@@ -76,10 +75,10 @@ def stop_callback(call):
     chat_id = call.message.chat.id
     if chat_id in active:
         active[chat_id]['stop'] = True
-        bot.answer_callback_query(call.id, 'остановлено')
-        bot.edit_message_text('остановлено', chat_id, call.message.message_id)
+        bot.answer_callback_query(call.id, 'stopped')
+        bot.edit_message_text('stopped', chat_id, call.message.message_id)
     else:
-        bot.answer_callback_query(call.id, 'нет спама')
+        bot.answer_callback_query(call.id, 'no spam')
 
 if __name__ == '__main__':
     while True:
